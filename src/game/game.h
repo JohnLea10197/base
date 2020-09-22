@@ -1817,13 +1817,14 @@ struct gameent : dynent, clientstate
         }
     }
 
-    void resetair(bool wait = false)
+  public:
+	void resetair(bool wait = false)
     {
         resetphys();
         resetjump(wait);
     }
-
-    void doimpulse(int type, int millis, int cost = 0, int side = 0, int turn = 0, float yaw = 0, float roll = 0)
+    
+	void doimpulse(int type, int millis, int cost = 0, int side = 0, int turn = 0, float yaw = 0, float roll = 0)
     {
         if(type < 0 || type >= IM_T_MAX) return;
         if(cost) impulse[IM_METER] += cost;
@@ -1851,7 +1852,7 @@ struct gameent : dynent, clientstate
 
     bool hasparkour()
     {
-        return impulse[IM_TYPE] == IM_T_PARKOUR || impulse[IM_TYPE] == IM_T_VAULT;
+        return (impulse[IM_TYPE] == IM_T_PARKOUR && impulse[IM_COUNT] >= impulsecount) || impulse[IM_TYPE] == IM_T_VAULT;
     }
 
     void addicon(int type, int millis, int fade, int value = 0)
@@ -1957,7 +1958,7 @@ struct gameent : dynent, clientstate
 
     bool sliding(bool power = false)
     {
-        if(impulse[IM_TYPE] == IM_T_VAULT) return true;
+        if(impulse[IM_TYPE] == IM_T_VAULT) return false;
         if(G(impulseslidelen) && impulsetime[IM_T_SLIDE] && lastmillis-impulsetime[IM_T_SLIDE] <= G(impulseslidelen)) return true;
         if(!power && G(impulsesliplen) && impulse[IM_SLIP] && lastmillis-impulse[IM_SLIP] <= G(impulsesliplen)) return true;
         return false;

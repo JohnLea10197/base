@@ -3730,7 +3730,7 @@ namespace game
                 if(lastoffset)
                 {
                     float zoffset = (max(d->zradius-d->height, 0.f)+(d->radius*0.5f))*firstpersonbodyzoffset;
-                    if(!onfloor && (d->action[AC_SPECIAL] || d->impulse[IM_TYPE] == IM_T_POUND || d->sliding(true) || d->impulse[IM_TYPE] == IM_T_KICK || d->impulse[IM_TYPE] == IM_T_GRAB))
+                    if(!onfloor && ((d->action[AC_SPECIAL] || d->action[AC_PARKOUR]) || d->impulse[IM_TYPE] == IM_T_POUND || d->sliding(true) || d->impulse[IM_TYPE] == IM_T_KICK || d->impulse[IM_TYPE] == IM_T_GRAB))
                     {
                         int lmillis = d->airtime(lastmillis);
                         if(lmillis < 100) zoffset *= lmillis/100.f;
@@ -3769,7 +3769,7 @@ namespace game
                 {
                     mdl.basetime2 = d->impulsetime[d->impulse[IM_TYPE]];
                     if(d->impulse[IM_TYPE] == IM_T_KICK || d->impulse[IM_TYPE] == IM_T_GRAB) mdl.anim |= ANIM_PARKOUR_JUMP<<ANIM_SECONDARY;
-                    else if(d->action[AC_SPECIAL] || d->impulse[IM_TYPE] == IM_T_POUND)
+                    else if((d->action[AC_SPECIAL] || d->action[AC_PARKOUR]) || d->impulse[IM_TYPE] == IM_T_POUND)
                     {
                         mdl.anim |= ANIM_FLYKICK<<ANIM_SECONDARY;
                         mdl.basetime2 = d->weaptime[W_MELEE];
@@ -3782,7 +3782,7 @@ namespace game
                 else if(d->physstate == PHYS_FALL && !d->onladder && d->airtime(lastmillis) >= 50)
                 {
                     mdl.basetime2 = max(d->airmillis, d->impulsetime[IM_T_JUMP]);
-                    if(d->action[AC_SPECIAL] || d->impulse[IM_TYPE] == IM_T_POUND)
+                    if((d->action[AC_SPECIAL] || d->action[AC_PARKOUR]) || d->impulse[IM_TYPE] == IM_T_POUND)
                     {
                         mdl.anim |= ANIM_FLYKICK<<ANIM_SECONDARY;
                         mdl.basetime2 = d->weaptime[W_MELEE];
