@@ -141,7 +141,7 @@ namespace physics
             default: break;
         }
         if(down) game::player1->actiontime[type] = lastmillis;
-        else if(type == AC_CROUCH || type == AC_JUMP) game::player1->actiontime[type] = -lastmillis;
+        else if(type == AC_CROUCH || type == AC_JUMP || type == AC_PARKOUR) game::player1->actiontime[type] = -lastmillis;
         game::player1->action[type] = down;
     }
 
@@ -152,7 +152,7 @@ namespace physics
     ICOMMAND(0, jump, "D", (int *n), doaction(AC_JUMP, *n!=0));
     ICOMMAND(0, walk, "D", (int *n), doaction(AC_WALK, *n!=0));
     ICOMMAND(0, crouch, "D", (int *n), doaction(AC_CROUCH, *n!=0));
-    ICOMMAND(0, special, "D", (int *n), doaction(AC_SPECIAL, *n!=0));
+    ICOMMAND(0, special, "D", (int *n), doaction(AC_PARKOUR, *n!=0));
     ICOMMAND(0, drop, "D", (int *n), doaction(AC_DROP, *n!=0));
     ICOMMAND(0, affinity, "D", (int *n), doaction(AC_AFFINITY, *n!=0));
     ICOMMAND(0, dash, "D", (int *n), doaction(AC_DASH, *n!=0));
@@ -737,7 +737,7 @@ namespace physics
              mchk = !melee || onfloor, action = mchk && (d->actortype >= A_BOT || melee || impulseaction&2),
              dash = d->action[AC_DASH] && onfloor, sliding = slide || (dash && d->move == 1 && d->crouching());
         int move = action ? d->move : 0, strafe = action ? d->strafe : 0;
-        bool moving = mchk && (move || strafe), pound = !melee && !launch && !sliding && !onfloor && (impulsepoundstyle || !moving) && d->action[AC_CROUCH];
+        bool moving = mchk && (move || strafe), pound = !melee && !launch && !sliding && !onfloor && (impulsepoundstyle || !moving) && (d->action[AC_CROUCH] || d->action[AC_PARKOUR]);
         if(d->actortype < A_BOT && !launch && !melee && !sliding && !impulseaction && !d->action[AC_DASH]) return false;
         int type = melee ? A_A_PARKOUR : (sliding ? A_A_SLIDE : (launch ? A_A_LAUNCH : (pound ? A_A_POUND : (dash ? A_A_DASH : A_A_BOOST))));
         bool pulse = melee ? !onfloor : d->action[AC_DASH] || (!launch && !onfloor && (d->actortype >= A_BOT || impulseaction&1) && d->action[AC_JUMP]);
@@ -828,7 +828,7 @@ namespace physics
                 createshape(PART_SMOKE, int(d->radius), 0x222222, 21, 20, 250, d->feetpos(), 1, 1, -10, 0, 10.f);
             }
         }
-        if(d->impulse[IM_TYPE] == IM_T_PARKOUR || d->action[AC_SPECIAL])
+        if(d->impulse[IM_TYPE] == IM_T_PARKOUR || d->action[AC_SPECIAL] || d->action[AC_PARKOUR])
         {
             bool found = false;
             vec oldpos = d->o, dir;
@@ -855,7 +855,7 @@ namespace physics
                 vec face = vec(collidewall).normalize();
                 if(fabs(face.z) <= impulseparkournorm)
                 {
-                    bool canspec = d->action[AC_SPECIAL] && canimpulse(d, A_A_PARKOUR, true), parkour = canspec && !onfloor && !d->onladder;
+                    bool canspec = (d->action[AC_SPECIAL] || d->action[AC_PARKOUR]) && canimpulse(d, A_A_PARKOUR, true), parkour = canspec && !onfloor && !d->onladder;
                     float yaw = 0, pitch = 0;
                     vectoyawpitch(face, yaw, pitch);
                     float off = yaw-d->yaw;
@@ -1192,8 +1192,8 @@ namespace physics
                 gameent *d = (gameent *)pl;
                 if(!d->airmillis && !sticktospecial(d))
                 {
-                    if(local && impulsemethod&2 && timeinair >= impulseslideinair && (d->move == 1 || d->strafe) && d->action[AC_CROUCH] && allowimpulse(d, A_A_SLIDE))
-                        impulseplayer(d, true, prevel, false, true);
+                    if(local && impulsemethod&2 && timeinair >= impulseslideinair && (d->move == 1 || d->strafe) && d->action[AC_PARKOUR] && allowimpulse(d, A_A_SLIDE))
+                       impulseplayer(d, true, prevel, false, true);
                     if(timeinair >= PHYSMILLIS)
                     {
                         if(mag >= 20)
