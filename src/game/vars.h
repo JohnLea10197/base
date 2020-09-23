@@ -460,13 +460,13 @@ GVAR(IDF_GAMEMOD, 0, enemyspawntime, 1, 60000, VAR_MAX); // when enemies respawn
 GVAR(IDF_GAMEMOD, 0, enemyspawndelay, 0, 1000, VAR_MAX); // after map start enemies first spawn
 GVAR(IDF_GAMEMOD, 0, enemyspawnstyle, 0, 1, 3); // 0 = all at once, 1 = staggered, 2 = random, 3 = randomise between both
 
-GFVAR(IDF_GAMEMOD, 0, movespeed, FVAR_NONZERO, 1.f, FVAR_MAX); // speed
+GFVAR(IDF_GAMEMOD, 0, movespeed, FVAR_NONZERO, 1.15f, FVAR_MAX); // speed
 GFVAR(IDF_GAMEMOD, 0, moveslow, 0, 0.5f, FVAR_MAX); // threshold for running
 GFVAR(IDF_GAMEMOD, 0, movecrawl, 0, 0.6f, FVAR_MAX); // crawl modifier
-GFVAR(IDF_GAMEMOD, 0, moverun, FVAR_NONZERO, 1.3f, FVAR_MAX); // running modifier
-GFVAR(IDF_GAMEMOD, 0, movestraight, FVAR_NONZERO, 1.2f, FVAR_MAX); // non-strafe modifier
-GFVAR(IDF_GAMEMOD, 0, movestrafe, FVAR_NONZERO, 1, FVAR_MAX); // strafe modifier
-GFVAR(IDF_GAMEMOD, 0, moveinair, FVAR_NONZERO, 0.75f, FVAR_MAX); // in-air modifier
+GFVAR(IDF_GAMEMOD, 0, moverun, FVAR_NONZERO, 1.15f, FVAR_MAX); // running modifier
+GFVAR(IDF_GAMEMOD, 0, movestraight, FVAR_NONZERO, 1.15f, FVAR_MAX); // non-strafe modifier
+GFVAR(IDF_GAMEMOD, 0, movestrafe, FVAR_NONZERO, 1.15, FVAR_MAX); // strafe modifier
+GFVAR(IDF_GAMEMOD, 0, moveinair, FVAR_NONZERO, 1.15f, FVAR_MAX); // in-air modifier
 GFVAR(IDF_GAMEMOD, 0, movestepup, FVAR_NONZERO, 0.95f, FVAR_MAX); // step-up modifier
 GFVAR(IDF_GAMEMOD, 0, movestepdown, FVAR_NONZERO, 1.15f, FVAR_MAX); // step-down modifier
 
