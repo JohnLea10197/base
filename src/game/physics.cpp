@@ -831,7 +831,7 @@ namespace physics
                 createshape(PART_SMOKE, int(d->radius), 0x222222, 21, 20, 250, d->feetpos(), 1, 1, -10, 0, 10.f);
             }
         }
-        if((d->impulse[IM_TYPE] == IM_T_PARKOUR || (d->action[AC_SPECIAL] || d->action[AC_PARKOUR]))) 
+        if(d->impulse[IM_TYPE] == IM_T_PARKOUR || (d->action[AC_SPECIAL] || d->action[AC_PARKOUR])) 
         {
             bool found = false;
 			vec oldpos = d->o, dir;
@@ -921,7 +921,7 @@ namespace physics
                         d->o = oldpos;
                         if(collided || (collideplayer && !inanimate::is(collideplayer))) continue; // we might find a better vector
 
-                        if(d->impulse[IM_TYPE] != IM_T_PARKOUR && ((gameent *)d)->impulse[IM_COUNT] < impulsecount)
+                        if((d->impulse[IM_TYPE] != IM_T_PARKOUR && ((gameent *)d)->impulse[IM_COUNT] < impulsecount) && !onfloor)
                         {
                             int cost = int(impulsecost*(isclimb ? impulsecostclimb : impulsecostparkour));
                             vec keepvel = vec(d->vel).add(d->falling);
