@@ -32,7 +32,7 @@ namespace physics
     bool allowimpulse(physent *d, int type)
     {
         if(d && gameent::is(d))
-            return ((!type || AA(((gameent *)d)->actortype, abilities)&(1<<type)) && (impulsestyle || PHYS(gravity) == 0));
+            return ((!type || AA(((gameent *)d)->actortype, abilities)&(1<<type)) && (impulsestyle || PHYS(gravity) == 0) && ((gameent *)d)->impulse[IM_COUNT] < impulsecount);
         return false;
     }
 
@@ -301,7 +301,7 @@ namespace physics
 
     bool sticktospecial(physent *d)
     {
-        if((gameent::is(d) && ((gameent *)d)->impulse[IM_TYPE] == IM_T_PARKOUR) && ((gameent *)d)->impulse[IM_COUNT] <= impulsecount)  return true;
+        if((gameent::is(d) && ((gameent *)d)->impulse[IM_TYPE] == IM_T_PARKOUR) && ((gameent *)d)->impulse[IM_COUNT] < impulsecount)  return true;
         return false;
     }
 
@@ -921,7 +921,7 @@ namespace physics
                         d->o = oldpos;
                         if(collided || (collideplayer && !inanimate::is(collideplayer))) continue; // we might find a better vector
 
-                        if(d->impulse[IM_TYPE] != IM_T_PARKOUR && ((gameent *)d)->impulse[IM_COUNT] < impulsecount)
+                        if(d->impulse[IM_TYPE] != IM_T_PARKOUR)
                         {
                             int cost = int(impulsecost*(isclimb ? impulsecostclimb : impulsecostparkour));
                             vec keepvel = vec(d->vel).add(d->falling);

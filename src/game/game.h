@@ -1852,7 +1852,7 @@ struct gameent : dynent, clientstate
 
     bool hasparkour()
     {
-        return (impulse[IM_TYPE] == IM_T_PARKOUR && impulse[IM_COUNT] >= impulsecount) || impulse[IM_TYPE] == IM_T_VAULT;
+        return (impulse[IM_TYPE] == IM_T_PARKOUR && impulse[IM_COUNT] < impulsecount) || impulse[IM_TYPE] == IM_T_VAULT;
     }
 
     void addicon(int type, int millis, int fade, int value = 0)
